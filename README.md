@@ -1,251 +1,195 @@
-# Git Style Guide
+# Git 風格指南
 
-This is a Git Style Guide inspired by [*How to Get Your Change Into the Linux
-Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches),
-the [git man pages](http://git-scm.com/doc) and various practices popular
-among the community.
+本文是一篇 Git 的風格指南，受到 [*How to Get Your Change Into the Linux
+Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches) 以及 [git 操作手冊](http://git-scm.com/doc)和流傳於社群間的最佳實踐所啟發。
 
-Translations of the guide are available in the following languages:
+本指南有其它語言的翻譯：
 
-* [Chinese Simplified](https://github.com/aseaday/git-style-guide)
-* [Portuguese](https://github.com/guylhermetabosa/git-style-guide)
+* [简体中文](https://github.com/aseaday/git-style-guide)
+* [葡萄牙文](https://github.com/guylhermetabosa/git-style-guide)
 
-If you feel like contributing, please do so! Fork the project and open a pull
-request.
+想要貢獻嗎？非常好！複製（Fork）本專案並發送一個收取要求（Pull Request）吧。
 
-# Table of contents
+# 目錄
 
-1. [Branches](#branches)
-2. [Commits](#commits)
-  1. [Messages](#messages)
-3. [Merging](#merging)
-4. [Misc.](#misc)
+* [分支](#分支)
+* [提交](#提交)
+  - [提交訊息](#提交訊息)
+* [合併](#合併)
+* [其它](#其它)
 
-## Branches
+## 分支
 
-* Choose *short* and *descriptive* names:
+* 選擇**小巧**具有**描述性的**名稱：
 
   ```shell
-  # good
+  # 好
   $ git checkout -b oauth-migration
 
-  # bad - too vague
+  # 差──過於模糊
   $ git checkout -b login_fix
   ```
 
-* Identifiers from corresponding tickets in an external service (eg. a GitHub
-  issue) are also good candidates for use in branch names. For example:
+* 外部服務對應的問題編號（譬如 GitHub 的 issue）也是分支（Branch）名稱的好選擇。比如：
 
   ```shell
   # GitHub issue #15
   $ git checkout -b issue-15
   ```
 
-* Use *dashes* to separate words.
+* 使用**連接符號（dash）**來分隔英文單字。
 
-* When several people are working on the *same* feature, it might be convenient
-  to have *personal* feature branches and a *team-wide* feature branch.
-  Use the following naming convention:
+* 幾個人一起開發**同一個**功能的時候，有**自己的**功能分支（Feature branch）以及**團隊共用**的功能分支可能會比較方便。可考慮以下的命名慣例：
 
   ```shell
-  $ git checkout -b feature-a/master # team-wide branch
-  $ git checkout -b feature-a/maria  # Maria's personal branch
-  $ git checkout -b feature-a/nick   # Nick's personal branch
+  $ git checkout -b feature-a/master # 團隊共用的分支
+  $ git checkout -b feature-a/maria  # Maria 的分支
+  $ git checkout -b feature-a/nick   # Nick 的分支
   ```
 
-  Merge at will the personal branches to the team-wide branch (see ["Merging"](#merging)).
-  Eventually, the team-wide branch will be merged to "master".
+  把個人分支合併到團隊分支裡（參考 [“合併”](#合併)）。
+  最後團隊共用的分支會合併回 "master"。
 
-* Delete your branch from the upstream repository after it's merged (unless
-  there is a specific reason not to).
+* 合併之後刪除上游程式庫（Repository）的分支（除非有保留的必要）。
 
-  Tip: Use the following command while being on "master", to list merged
-  branches:
+  秘訣：在 "master" 分支使用下面的命令來列出已合併的分支：
 
   ```shell
   $ git branch --merged | grep -v "\*"
   ```
 
-## Commits
+## 提交
 
-* Each commit should be a single *logical change*. Don't make several
-  *logical changes* in one commit. For example, if a patch fixes a bug and
-  optimizes the performance of a feature, split it into two separate commits.
+* 每次提交應該都是單一的**邏輯變動**。一個提交裡不要做多個**邏輯變動**。譬如若是一個補丁修復一個錯誤同時優化了效能，則將其分為兩個獨立的提交。
 
-* Don't split a single *logical change* into several commits. For example,
-  the implementation of a feature and the corresponding tests should be in the
-  same commit.
+* 不要把**單一邏輯變動**分成多個提交。譬如功能的實作以及對應的測試應該屬於同一個提交。
 
-* Commit *early* and *often*. Small, self-contained commits are easier to
-  understand and revert when something goes wrong.
+* **盡早提交，時常提交**。小巧、自身完備的提交，在事情出錯時更容易理解與取消（revert）。
 
-* Commits should be ordered *logically*. For example, if *commit X* depends
-  on changes done in *commit Y*, then *commit Y* should come before *commit X*.
+* 提交應該按照邏輯的順序排序。假設**乙提交**依賴**甲提交**的修改內容，則**甲提交**應該在**乙提交**之前。
 
-### Messages
+### 提交訊息
 
-* Use the editor, not the terminal, when writing a commit message:
+* 撰寫提交訊息時，請使用編輯器而不是終端機：
 
   ```shell
-  # good
+  # 好
   $ git commit
 
-  # bad
+  # 差
   $ git commit -m "Quick fix"
   ```
 
-  Committing from the terminal encourages a mindset of having to fit everything
-  in a single line which usually results in non-informative, ambiguous commit
-  messages.
+  從終端裡提交變相鼓勵將所有資訊都塞在一行裡，通常會變成資訊不明確又模糊的提交。
 
-* The summary line (ie. the first line of the message) should be
-  *descriptive* yet *succinct*. Ideally, it should be no longer than
-  *50 characters*. It should be capitalized and written in imperative present
-  tense. It should not end with a period since it is effectively the commit
-  *title*:
+* 總結行（也就是訊息的第一行）應該要簡潔有力。最理想的情況是不超過 **50** 個字元。第一個單字要大寫並用現在命令式時態。不需要有句號因為總結是提交訊息的**標題**：
 
   ```shell
-  # good - imperative present tense, capitalized, fewer than 50 characters
+  # 好──現在命令式、大寫並少於 50 個字元
   Mark huge records as obsolete when clearing hinting faults
 
-  # bad
+  # 差
   fixed ActiveModel::Errors deprecation messages failing when AR was used outside of Rails.
   ```
 
-* After that should come a blank line followed by a more thorough
-  description. It should be wrapped to *72 characters* and explain *why*
-  the change is needed, *how* it addresses the issue and what *side-effects*
-  it might have.
+* 空一行之後接著是更加完整的描述。一行應該要控制在 **72 個字元**以內，並解釋為什麼需要這個變動？解決了什麼問題？以及可能的副作用是什麼。
 
-  It should also provide any pointers to related resources (eg. link to the
-  corresponding issue in a bug tracker):
+  也應該要提供任何相關資源的連結（比如連結到 Bug Tracker 對應的問題）：
 
   ```shell
-  Short (50 chars or fewer) summary of changes
+  簡短總結變動（50 個字元內）
 
-  More detailed explanatory text, if necessary. Wrap it to
-  72 characters. In some contexts, the first
-  line is treated as the subject of an email and the rest of
-  the text as the body.  The blank line separating the
-  summary from the body is critical (unless you omit the body
-  entirely); tools like rebase can get confused if you run
-  the two together.
+  更加詳細的說明文字（需要的話）。一行保持在 72 個字元。某些情況下，第一行會被視為 Email 的主旨，
+  其它行會是 Email 的內容。總結下面空一行非常重要（除非你忽略整個提交的主體）；
+  若是總結下面沒有空一行，rebase 就會搞混，而把兩次提交混在一起。
 
-  Further paragraphs come after blank lines.
+  更多段落先空行再繼續撰寫。
 
-  - Bullet points are okay, too
+  - 也可以使用項目符號（Bullet points）
 
-  - Use a hyphen or an asterisk for the bullet,
-    followed by a single space, with blank lines in
-    between
+  - 項目的符號使用連字號或星號，符號後空一格，之間留空行
 
-  Source http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+  參考：http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
   ```
 
-  Ultimately, when writing a commit message, think about what you would need
-  to know if you run across the commit in a year from now.
+  最後在撰寫提交訊息時，想想看一年之後回頭看這個提交時，會需要知道什麼內容。
 
-* If a *commit A* depends on another *commit B*, the dependency should be
-  stated in the message of *commit A*. Use the commit's hash when referring to
-  commits.
+* 若**甲提交**依賴於**乙提交**，則之間的依賴關係應該要在甲提交裡敘述。在引用提交時，請使用提交的 SHA-1。
 
-  Similarly, if *commit A* solves a bug introduced by *commit B*, it should
-  be stated in the message of *commit A*.
+  同樣若**甲提交**解決一個由**乙提交**引入的 Bug，則應要在甲提交裡說明。
 
-* If a commit is going to be squashed to another commit use the `--squash` and
-  `--fixup` flags respectively, in order to make the intention clear:
+* 若提交之後會整併（squash）到另一個提交裡，則分別使用 `--squash` 以及 `--fixup` 使得意圖更明顯：
 
   ```shell
   $ git commit --squash f387cab2
   ```
 
-  *(Tip: Use the `--autosquash` flag when rebasing. The marked commits will be
-  squashed automatically.)*
+  秘訣：在重校基準（rebase）時使用 `--autosquash`。標註的提交會自動被整併。
 
-## Merging
+## 合併
 
-* **Do not rewrite published history.** The repository's history is valuable in
-  its own right and it is very important to be able to tell *what actually
-  happened*. Altering published history is a common source of problems for
-  anyone working on the project.
+* **不要重寫已經發佈的版本歷史。**程式碼倉庫的版本歷史本身很有價值，能夠知道究竟發生了什麼事非常重要。修改已經發佈的歷史通常是造成專案參與者問題的根源所在。
 
-* However, there are cases where rewriting history is legitimate. These are
-  when:
+* 但有些場合可以重寫歷史是，比如像是：
 
-  * You are the only one working on the branch and it is not being reviewed.
+  * 你是分支唯一的開發者，而且分支不會需要進行程式碼審查（Code Review）。
 
-  * You want to tidy up your branch (eg. squash commits) and/or rebase it onto
-    the "master" in order to merge it later.
+  * 想要整理分支（譬如：整併無謂的提交）或是為了之後要合併回 "master" 的重校基準（rebase）之用。
 
-  That said, *never rewrite the history of the "master" branch* or any other
-  special branches (ie. used by production or CI servers).
+  也就是說，**永遠不要重寫 "master" 分支的歷史**，或任何特殊分支的版本歷史（譬如 CI 伺服器所使用的 production 分支）。
 
-* Keep the history *clean* and *simple*. *Just before you merge* your branch:
+* 保持版本歷史簡潔。在合併分支之前：
 
-    1. Make sure it conforms to the style guide and perform any needed actions
-       if it doesn't (squash/reorder commits, reword messages etc.)
+    - 1. 確保符合風格指南，完成任何需要的前置作業（整併提交、調整提交順序或是修改提交訊息等）。
 
-    2. Rebase it onto the branch it's going to be merged to:
+    - 2. 對即將合併進去的分支做基準校正（rebase）：
 
-       ```shell
-       [my-branch] $ git fetch
-       [my-branch] $ git rebase origin/master
-       # then merge
-       ```
+      ```shell
+      [my-branch] $ git fetch
+      [my-branch] $ git rebase origin/master
+      # then merge
+      ```
 
-       This results in a branch that can be applied directly to the end of the
-       "master" branch and results in a very simple history.
+      這會使分支可以直接應用在 "master" 分支之上，並會有乾淨的版本歷史。
 
-       *(Note: This strategy is better suited for projects with short-running
-       branches. Otherwise it might be better to occassionally merge the
-       "master" branch instead of rebasing onto it.)*
+      **（備註：這個策略適合生命週期短的分支。不然將 "master" 分支合併進來會比重新校正基準好。）**
 
-* If your branch includes more than one commit, do not merge with a
-  fast-forward:
+*   若分支超過一次提交，不要使用 fash-forward 來合併：
 
-  ```shell
-  # good - ensures that a merge commit is created
-  $ git merge --no-ff my-branch
+    ```shell
+    # 好──確保有建立合併提交（merge commit）
+    $ git merge --no-ff my-branch
 
-  # bad
-  $ git merge my-branch
-  ```
+    # 差
+    $ git merge my-branch
+    ```
 
-## Misc.
+## 其它
 
-* There are various workflows and each one has its strengths and weaknesses.
-  Whether a workflow fits your case, depends on the team, the project and your
-  development procedures.
+* 每個工作流程都有各自的優缺點。適合你、你們團隊、你的專案、你的開發流程的工作流程就是好的工作流程。
 
-  That said, it is important to actually *choose* a workflow and stick with it.
+  也就是，選擇一個工程流程，並堅守這個流程非常重要。
 
-* *Be consistent.* This is related to the workflow but also expands to things
-  like commit messages, branch names and tags. Having a consistent style
-  throughout the repository makes it easy to understand what is going on by
-  looking at the log, a commit message etc.
+* **保持一致。**這和工作流程有關，但也可以應用到像是提交訊息、分支名稱以及標籤名稱上。程式庫有著一致的風格在檢視記錄或提交的時候更容易了解發生了什麼事。
 
-* *Test before you push.* Do not push half-done work.
+* **推送前先測試。** 不要把半成品推送上去。
 
-* Use [annotated tags](http://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags) for
-  marking releases or other important points in the history.
+* 使用 [annotated tags](http://git-scm.com/book/en/v2/Git-Basics-Tagging#Annotated-Tags)，來在版本歷史中標記版本發佈或是重要的時間點。
 
-  Prefer [lightweight tags](http://git-scm.com/book/en/v2/Git-Basics-Tagging#Lightweight-Tags) for personal use, such as to bookmark commits
-  for future reference.
+  自己的話建議採用 [Lightweight Tags](http://git-scm.com/book/en/v2/Git-Basics-Tagging#Lightweight-Tags)，像是把提交下書籤以供未來參考之用。
 
-* Keep your repositories at a good shape by performing maintenance tasks
-  occasionally, in your local *and* remote repositories:
+* 時常將程式庫保持在良好狀態。在本機及遠端程式庫執行以下維護性任務：
 
   * [`git-gc(1)`](http://git-scm.com/docs/git-gc)
   * [`git-prune(1)`](http://git-scm.com/docs/git-prune)
   * [`git-fsck(1)`](http://git-scm.com/docs/git-fsck)
 
-# License
+# 授權
 
-![cc license](http://i.creativecommons.org/l/by/3.0/88x31.png)
+![cc license](http://i.creativecommons.org/l/by/4.0/88x31.png)
 
-This work is licensed under a Creative Commons Attribution 4.0
-International license.
+本著作係採用創用 CC 姓名標示 4.0 國際授權條款授權。
 
-# Credits
+# 致謝
 
 Agis Anastasopoulos / [@agisanast](https://twitter.com/agisanast) / http://agis.io
