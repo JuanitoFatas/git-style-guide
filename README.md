@@ -140,9 +140,9 @@ Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches) 以及 [git
 
 * 保持版本歷史簡潔。在合併分支之前：
 
-    - 1. 確保符合風格指南，完成任何需要的前置作業（整併提交、調整提交順序或是修改提交訊息等）。
+    - 確保符合風格指南，完成任何需要的前置作業（整併提交、調整提交順序或是修改提交訊息等）。
 
-    - 2. 對即將合併進去的分支做基準校正（rebase）：
+    - 對即將合併進去的分支做基準校正（rebase）：
 
       ```shell
       [my-branch] $ git fetch
