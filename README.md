@@ -154,7 +154,7 @@ Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches) 以及 [git
 
       **（備註：這個策略適合生命週期短的分支。不然將 "master" 分支合併進來會比重新校正基準好。）**
 
-*   若分支超過一次提交，不要使用 fash-forward 來合併：
+*   若分支超過一次提交，不要使用 fast-forward 來合併：
 
     ```shell
     # 好──確保有建立合併提交（merge commit）
