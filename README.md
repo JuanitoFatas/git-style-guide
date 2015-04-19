@@ -5,6 +5,7 @@ Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches) 以及 [git
 
 本指南有其它語言的翻譯：
 
+* [原文](https://github.com/agis-/git-style-guide)
 * [简体中文](https://github.com/aseaday/git-style-guide)
 * [葡萄牙文](https://github.com/guylhermetabosa/git-style-guide)
 
