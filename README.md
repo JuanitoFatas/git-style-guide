@@ -8,6 +8,11 @@ Kernel*](https://www.kernel.org/doc/Documentation/SubmittingPatches) 以及 [git
 * [原文](https://github.com/agis-/git-style-guide)
 * [简体中文](https://github.com/aseaday/git-style-guide)
 * [葡萄牙文](https://github.com/guylhermetabosa/git-style-guide)
+* [法文](https://github.com/pierreroth64/git-style-guide)
+* [日文](https://github.com/objectx/git-style-guide)
+* [韓文](https://github.com/ikaruce/git-style-guide)
+* [葡萄牙文](https://github.com/guylhermetabosa/git-style-guide)
+* [烏克蘭文](https://github.com/denysdovhan/git-style-guide)
 
 想要貢獻嗎？非常好！複製（Fork）本專案並發送一個收取要求（Pull Request）吧。
 
